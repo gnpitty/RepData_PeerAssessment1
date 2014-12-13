@@ -59,14 +59,14 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 <div id="loading-and-preprocessing-the-data" class="section level3">
-<h3>Loading and preprocessing the data:</h3>
+<h3>Loading and preprocessing the data</h3>
 <pre class="r"><code>data  &lt;- read.table(&quot;activity.csv&quot;, header = TRUE, sep = &quot;,&quot; ) 
 library(data.table)
 library (ggplot2)
 library (plyr)</code></pre>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level3">
-<h3>What is mean total number of steps taken per day</h3>
+<h3>What is mean total number of steps taken per day?</h3>
 <pre class="r"><code>#library (lubridate)
 cleandata &lt;- subset(data, !is.na(steps))
 dtotal &lt;- ddply(cleandata,~date,summarise,total_per_day=sum(steps),mean=mean(steps),median=median(steps))</code></pre>
@@ -110,8 +110,8 @@ head(data2)</code></pre>
 ## 5 37.3826 2012-10-01       20
 ## 6 37.3826 2012-10-01       25</code></pre>
 </div>
-<div id="differences-in-activity-patterns-between-weekdays-and-weekends" class="section level3">
-<h3>Differences in activity patterns between weekdays and weekends</h3>
+<div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level3">
+<h3>Are there differences in activity patterns between weekdays and weekends?</h3>
 <pre class="r"><code>  wd1 &lt;- wday(as.Date(data2$date,format(&quot;%Y-%m-%d&quot;)) )
 
 data2&lt;- mutate(data2,   weekend = ifelse( (wd1 == 1 | wd1== 7) , &quot;weekend&quot;,&quot;weekday&quot; ) )

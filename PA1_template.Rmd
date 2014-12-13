@@ -3,9 +3,10 @@ title: "Reproducible Research, Assignment #1"
 author: "gnpitty"
 date: "Saturday, December 13, 2014"
 output: html_document
+ 
 ---
 
-###Loading and preprocessing the data:
+### Loading and preprocessing the data
 
 ```{r, echo=TRUE}
 data  <- read.table("activity.csv", header = TRUE, sep = "," ) 
@@ -13,7 +14,7 @@ library(data.table)
 library (ggplot2)
 library (plyr)
 ```  
-###What is mean total number of steps taken per day
+### What is mean total number of steps taken per day?
 ```{r, echo=TRUE}
 #library (lubridate)
 cleandata <- subset(data, !is.na(steps))
@@ -30,12 +31,12 @@ Calculate and report the mean and median total number of steps taken per day
 head(dtotal) 
 ```
 
-###What is the average daily activity pattern?
+### What is the average daily activity pattern?
 ```{r, echo=TRUE}
 plot(as.Date(dtotal$date,'%Y-%m-%d'), dtotal$tot_day, xlab= "Total per day", ylab= "Dates", type='l', col='red') 
 ```
 
-###Imputing missing values
+### Imputing missing values
  total number of missing values in the dataset 
 ```{r, echo=TRUE}
 nadata <- subset(data, is.na(steps))
@@ -54,7 +55,7 @@ head(data2)
 ```
 
 
-###Differences in activity patterns between weekdays and weekends
+### Are there differences in activity patterns between weekdays and weekends?
 ```{r, echo=TRUE}
 
   wd1 <- wday(as.Date(data2$date,format("%Y-%m-%d")) )
