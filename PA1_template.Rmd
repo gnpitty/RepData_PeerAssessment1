@@ -33,7 +33,11 @@ head(dtotal)
 
 ### What is the average daily activity pattern?
 ```{r, echo=TRUE}
-plot(as.Date(dtotal$date,'%Y-%m-%d'), dtotal$tot_day, xlab= "Total per day", ylab= "Dates", type='l', col='red') 
+dtotal2 <- ddply(cleandata,~interval ,summarise,total_per_interval=sum(steps),mean=mean(steps))
+attach(dtotal2) 
+plot(interval,mean ,type="o",col="red")
+maxinterval = dtotal2[mean==max(dtotal2$mean), ][1]
+print(maxinterval)
 ```
 
 ### Imputing missing values
