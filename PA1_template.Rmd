@@ -1,25 +1,70 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "Reproducible Research, Assignment #1"
+author: "gnpitty"
+date: "Saturday, December 13, 2014"
+output: html_document
 ---
 
+###Loading and preprocessing the data:
 
-## Loading and preprocessing the data
+```{r, echo=TRUE}
+data  <- read.table("activity.csv", header = TRUE, sep = "," ) 
+library(data.table)
+library (ggplot2)
+library (plyr)
+```  
+###What is mean total number of steps taken per day
+```{r, echo=TRUE}
+#library (lubridate)
+cleandata <- subset(data, !is.na(steps))
+dtotal <- ddply(cleandata,~date,summarise,total_per_day=sum(steps),mean=mean(steps),median=median(steps))
+```
+Make a histogram of the total number of steps taken each day
+```{r, echo=TRUE}
+ 
+ hist(dtotal$total_per_day , main="Total number of steps taken each day",xlab="steps taken each day")
+```
+
+Calculate and report the mean and median total number of steps taken per day
+```{r, echo=TRUE}
+head(dtotal) 
+```
+
+###What is the average daily activity pattern?
+```{r, echo=TRUE}
+plot(as.Date(dtotal$date,'%Y-%m-%d'), dtotal$tot_day, xlab= "Total per day", ylab= "Dates", type='l', col='red') 
+```
+
+###Imputing missing values
+ total number of missing values in the dataset 
+```{r, echo=TRUE}
+nadata <- subset(data, is.na(steps))
+maxrec <- cleandata[cleandata$steps==max(cleandata$steps),]
+nacount<- lapply(nadata , length)
+nacount<- nacount$steps
+ print(nacount)
+```
+ filling in all of the missing values in the dataset
+ Create a new dataset that is equal to the original dataset but with the missing data filled in.
+```{r, echo=TRUE}
+stepMean <- mean(cleandata$steps)
+data2<- data
+data2[is.na(data2$steps),1] <- stepMean 
+head(data2)
+```
 
 
+###Differences in activity patterns between weekdays and weekends
+```{r, echo=TRUE}
 
-## What is mean total number of steps taken per day?
+  wd1 <- wday(as.Date(data2$date,format("%Y-%m-%d")) )
 
+data2<- mutate(data2,   weekend = ifelse( (wd1 == 1 | wd1== 7) , "weekend","weekday" ) )
+#png("plotN.png", width=480, height=480 )
+attach(data2)
+ 
+ qplot(data2,x=interval,y=steps ,facets=.~ weekend)
 
+```
 
-## What is the average daily activity pattern?
-
-
-
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
+ 
